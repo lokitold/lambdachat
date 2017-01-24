@@ -27,7 +27,7 @@ function escapeHtml(text) {
 module.exports.hello = (event, context, callback) => {
   console.log('Handle DynamoDB Streams event');
     //console.log(JSON.stringify(event, null, 2));
-    var new_object = event.Records[0].Dynamodb;
+    var new_object = event.Records[0].dynamodb;
     var channel = "default";
     if ('channel' in new_object.NewImage) {
         channel = new_object.NewImage.channel.S;

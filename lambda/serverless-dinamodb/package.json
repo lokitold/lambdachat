@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.1.4",
-    "aws-sdk": "^2.7.27"
+    "async": "^2.1.4"
   }
 }

@@ -4,7 +4,7 @@
          "EventName":"INSERT",
          "EventVersion":"1.0",
          "EventSource":"aws:dynamodb",
-         "Dynamodb":{  
+         "dynamodb":{  
             "NewImage":{  
                "Message":{  
                   "S":"New item!"
