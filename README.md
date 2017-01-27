@@ -1,10 +1,16 @@
 # Lambda Chat
 A chat application without servers - using only AWS Lambda, S3, DynamoDB and SNS
 
+# Fork by Cloudnative
+https://github.com/cloudnative/lambda-chat
+
+
+
+
 
 ## Live Demo
 
-http://lambda-chat.s3-website-us-west-2.amazonaws.com/
+http://lambda-chat2.s3-website-us-east-1.amazonaws.com/
 
 Please don't send a million messages through here - it does cost us money and we will turn it off if it is abused.
 
@@ -133,6 +139,13 @@ Once the stack is complete, run:
     ./resources.py output --region=us-east-1
 
 and add these values to your `config.yml` file.
+
+If 
+    ERROR
+    Resource Subscription required in type AWS::SNS::topic
+    Resource Subscription required in type AWS::SNS::Topic`
+
+    ejecutar  : pip install troposphere --upgrade
 
 #### Website
 
