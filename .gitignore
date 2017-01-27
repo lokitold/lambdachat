@@ -38,3 +38,8 @@ s3-website/public/config.js
 
 # Ignore the data file
 s3-website/public/data.json
+
+#ignore serverless
+lambda/serverless-dinamodb/.serverless/
+lambda/ServerlessSns/.serverless/
+
