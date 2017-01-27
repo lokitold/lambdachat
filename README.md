@@ -1,12 +1,13 @@
 # Lambda Chat
 A chat application without servers - using only AWS Lambda, S3, DynamoDB and SNS
 
-# Fork by Cloudnative
+## Fork by Cloudnative
 https://github.com/cloudnative/lambda-chat
 
+##Improvements
 
-
-
+- Translation
+- Use of serverless instead of kappa
 
 ## Live Demo
 
