@@ -216,24 +216,24 @@ template: inverse
 layout: false
 name: what
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 ]
 .right-column[
-  A compute service that makes it easy to run a function in response to events.
+  AWS Lambda es un servicio de computación sin servidores que facilita la ejecución de una función en respuesta a eventos.
 
   ### Example
 
 .slides[
   .first[
   ### Event
-  New image
+  Nueva Imagen
   ]
   .arrow[
     ## &rarr;
   ]
   .second[
   ### Function
-  Generate thumbnail
+  Generar thumbnail
   ]
 ]
 
@@ -241,24 +241,24 @@ name: what
 
 ---
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 
-  ### - Event
+  ### - Evento
 ]
 .right-column[
-  What events can trigger a Lambda function?
+  ¿Qué eventos pueden desencadenar una función Lambda?
 
-  - New object in S3
+  - Nuevo objeto en S3
 
-  - An item changed in a DynamoDB table
+  - Un elemento cambiado en una tabla DynamoDB
 
-  - New entries in a Kinesis stream
+  - Nuevas entradas en un flujo de Kinesis
 
-  - A sync event in Cognito
+  - Un evento de sincronización en Cognito
 
-  - API call: `Invoke` and `InvokeAsync`
+  - Llamada de la API: `Invoke` y` InvokeAsync`
 
-  - SNS message
+  - Mensaje de SNS
 ]
 
 ???
@@ -274,21 +274,21 @@ Examples
   - SNS Message is the big one.
 ---
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 
   ### - Event
   ### - Function
 ]
 .right-column[
-  What language can I write a Lambda function in?
+  ¿En qué lenguaje de programación puedo escribir una función Lambda?
 
-  - Now: JavaScript (technially NodeJS v0.10.33)
+  - JavaScript (NodeJS v4.3)
 
-  - Announced: Java
+  - Java 8
 
-  - Wanted: Python and Go
+  - Python 2.7
 
-  - Hack: Anything
+  - C#
 ]
 
 ???
@@ -297,79 +297,79 @@ Java should have been released by Apr 24?
 
 ---
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 
   ### - Event
   ### - Function
 
-  ## Why use it?
+  ## ¿Por qué usarlo?
 ]
 .right-column[
-  You get to focus on the code!
+  ¡Usted consigue centrarse en el código!
 
-  - Write atomic units
+   - Escribir unidades atómicas
 
-  - Easy to test
+   - Fácil de probar
 
-  - No server or container maintenance
+   - Sin mantenimiento de servidores o contenedores
 
-  - Forced micro (nano?) services approach
+   - Forzar el enfoque de micro (nano?) servicios
 
-  - Secured by an IAM policy
+   - Asegurado por una política de IAM
 
-  - Speed
+   - Velocidad
 
-  - Cheap
+   - Barato
 ]
 
 ???
-  - You don't worry about setting up and configuring NodeJS, or monitoring, or logging services - all built in
-  - A Dockerfile is ops - you are writing a shell script to configure an environment
-  - A lambda function is protected by the same IAM policy framework that protects the rest of your AWS infrastructure
+ No se preocupe por configurar y configurar NodeJS, o los servicios de monitoreo o registro - todos ellos incorporados
+   - Un Dockerfile es ops - está escribiendo un script de shell para configurar un entorno
+   - Una función lambda está protegida por el mismo marco de políticas IAM que protege el resto de su infraestructura AWS
 
 ---
 template: inverse
 
-## How cheap?
+## Barato?
 ---
 .left-column[
-  ## Billing Model
+  ## Modelo de facturación
 ]
 .right-column[
-AWS Lambda is charged by both
+AWS Lambda es cobrado por
 
-  - Requests
+  - Peticiones
     - $0.20 per million requests
 
-  - Compute
+  - Computo
     - $0.00001667 per GB-second
 
-### Free tier
+### Capa gratuita
 
-The Lambda free tier includes:
+La capa gratuita de Lambda incluye:
 
-  - 1,000,000 free requests per month
+  - 1,000,000 peticiones mensuales
 
-  - 400,000 GB-seconds of compute time per month
+  - 400,000 GB-seconds de tiempo de computo por mes
 
 ]
 
 ---
 name: billing
 .left-column[
-  ## Billing Model
+  ## Modelo de facturación
 
 ]
 .right-column[
-How is a GB-second calculated?
+¿Cómo se calcula un GB-second?
 
-  - Duration: rounded up to the nearest 100ms
+   - Duración: redondeado a los 100 ms
 
-  - Memory: you choose the maximum memory your function needs
+   - Memoria: elige la memoria máxima que necesita tu función
 
-    - from 128MB to 1GB
+     - de 128MB a 1GB
 
-    - in increments of 64MB
+     - en incrementos de 64MB
 
 
 ### Formula
@@ -381,18 +381,18 @@ GB-s = (memory / 1024) * (duration * 1000)
 ]
 ---
 .left-column[
-  ## Billing Model
+  ## Modelo de facturación
 
-  ### - Example
+  ### - Ejemplo
 
 ]
 .right-column[
-An example
+  Un ejemplo
 
-  - 10M requests / month
-  - Each request
-      - lasts for 600ms
-      - uses a max of 512Mb of memory
+  - 10M solicitudes / mes
+  - Cada solicitud
+      - dura 600 ms
+      - utiliza un máximo de 512Mb de memoria
 
 ```python
 Request cost  = (10M - 1M) * $0.20/month
@@ -410,30 +410,30 @@ Compute costs = (3,000,000 - 400,000) * $0.00001667
 ---
 template: inverse
 
-## OK, that's cheap.
+## OK, eso es barato.
 
-## So how does it work?
+## ¿Entonces, cómo funciona?
 ---
 .left-column[
-## Programming model
+## Modelo de programación
 
 ]
 .right-column[
-Your function defines a handler
+Tu función define un handler
 
 ```javascript
-exports.handler = function(event, context) {
+exports.handler = function(event, context, callback) {
   var key1 = event.key1
-  console.log('value =', key1);
-  context.succeed(key1);
+  console.log("value1 = " + key1);
+  console.log("value2 = " + event.key2);  
+  callback(null, "some success message");
 };
 ```
 
 ### The `context` object
 
-  - How you interact with the Lambda execution environment
+  - Cómo interactúa con el entorno de ejecución Lambda
 
-  - When your function is complete, call one of:
     ```javascript
       // It's all good
       context.succeed(Object result);
@@ -449,6 +449,27 @@ exports.handler = function(event, context) {
 "error first" callback design pattern
 
 ---
+
+.left-column[
+## Modelo de programación
+
+]
+.right-column[
+
+### The `callback` object
+  - Puede utilizar la devolución de llamada opcional para devolver información
+
+    ```javascript
+    callback(null, "some success message");
+    // or 
+    // callback("some error type"); 
+    ```
+]
+???
+"error first" callback design pattern
+
+---
+
 .left-column[
 ## Invocation
 
