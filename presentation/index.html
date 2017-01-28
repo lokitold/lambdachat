@@ -471,7 +471,7 @@ exports.handler = function(event, context, callback) {
 ---
 
 .left-column[
-## Invocation
+##  Invocación
 
 ### - Pull
 
@@ -479,16 +479,16 @@ exports.handler = function(event, context, callback) {
 .right-column[
 ### Pull Model
 
-Lambda polls the event source and invokes your Lambda function when it detects an event
+Lambda examina la fuente de eventos e invoca su función Lambda cuando detecta un evento
 
 ![Lambda Kinesis Pull Model](imgs/kinesis-pull-10.png)
 
-.footnote[.red[*] Image ~~courteous of~~ stolen from the AWS docs]
+
 
 ]
 ---
 .left-column[
-## Invocation
+## Invocación
 
 ### - Pull
 ### - Push
@@ -498,7 +498,7 @@ Lambda polls the event source and invokes your Lambda function when it detects a
 
 ### Push Model
 
-The event source directly invokes a Lambda function when it detects an event
+El origen de eventos invoca directamente una función Lambda cuando detecta un evento
 
 ![Lambda S3 Push Model](imgs/push-s3-example-10.png)
 
@@ -507,22 +507,22 @@ The event source directly invokes a Lambda function when it detects an event
 ]
 ---
 .left-column[
-## Permissions
+## Permisos
 
 ]
 .right-column[
 
-Your Lambda function executes within an IAM Role
+Su función Lambda se ejecuta dentro de un Rol IAM
 
 ### Execution Permissions
 
 E.g.
 
-  - Write logs to CloudWatch Logs (needed for debugging)
-  - Read/write objects from/to an S3 bucket
-  - Write items to a DynamoDB table
+  - Escribir registros en los registros de CloudWatch (necesarios para la depuración)
+  - Leer / escribir objetos de / a un bucket de  S3
+  - Escribir elementos en una tabla DynamoDB
 
-### Invocation Permissions
+### Permisos de invocación
 
 ```json
 {
@@ -549,147 +549,94 @@ Cross-account
 "Principal": "account-id"
 ```
 ---
-## Example Kinesis Pull Policy
+## Example S3 Pull Policy
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "lambda:InvokeFunction"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "kinesis:GetRecords",
-        "kinesis:GetShardIterator",
-        "kinesis:DescribeStream",
-        "kinesis:ListStreams",
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "*"
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream"
+            ],
+            "Resource": "arn:aws:logs:us-west-2:*:*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:us-west-2:*:*",
+            "Effect": "Allow"
+        }
+        {
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
 }
 ```
 ---
 template: inverse
 
-## Open Source Projects
----
-## lambdash
-
-Written by Eric Hammond ([@esh](https://twitter.com/esh))
-
-
-### What is it?
-
-A lambda function that runs arbitrary shell commands in the AWS Lambda environment.
-
-```
-$ lambdash pwd
-/var/task
-```
-
-.footnote[https://github.com/alestic/lambdash]
+## Serverless
+![Lambda S3 Push Model](imgs/serverless.png)
 
 ---
-template: inverse
+## Serverless
 
-## Demo
+Desarrollado por Austen Collins ([@austencollins](https://twitter.com/austencollins)) 
 
-???
 
-```
-cd ~/code/pas256/lambdash
-./lambdash pwd
-./lambdash cat /etc/issue
-./lambdash python --version
-./lambdash /usr/bin/python2.7 --version
-./lambdash java -version
-```
+### Qué es esto?
 
-What NodeJS modules are installed
+Serverless es una herramienta de línea de comandos que facilita el despliegue, actualización y prueba de las funciones de AWS Lambda
 
 ```
-dirs=$(./lambdash 'echo $NODE_PATH' | tr ':' '\n' | sort); echo $dirs
-
-./lambdash 'for dir in '$dirs'; do echo $dir; ls -1 $dir; echo; done'
-```
----
-## Go in Lambda
-
-1. Compile Go app against Amazon Linux
-2. Use this Javascript handler
-
-```
-var child_process = require('child_process');
-
-exports.handler = function(event, context) {
-  var proc = spawn('./my-go-app', [ JSON.stringify(event) ], { stdio: 'inherit' });
-
-  proc.on('close', function(code){
-    if(code !== 0) {
-      return context.done(new Error("Process exited with non-zero status code"));
-    }
-
-    context.done(null);
-  });
-}
-```
----
-## Kappa
-
-Written by Mitch Garnaat ([@garnaat](https://twitter.com/garnaat)) who also wrote boto
-
-### What is it?
-
-Kappa is a command line tool that makes it easier to deploy, update, and test AWS Lambda functions
-
-```
-$ kappa [OPTIONS] CONFIG COMMAND [ARGS]...
+$ npm install serverless -g
 ```
 
-The config is a YAML file containing all the details
+La configuración es un archivo YAML que contiene todos los detalles
 
-.footnote[https://github.com/garnaat/kappa]
+.footnote[https://serverless.com/]
 
 ---
-## Kappa Kinesis config file
+## serverless.yml config file
 
 ```bash
-# Change the profile and region to suit your application
-profile: personal
-region: us-east-1
-iam:
-  policy:
-    name: AWSLambdaKinesisExecutionRole
-  role:
-    name: KinesisSampleRole
-lambda:
-  name: KinesisSample
-  zipfile_name: KinesisSample.zip
-  description: Testing Kinesis Lambda handler
-  path: ProcessKinesisRecords.js
-  handler: ProcessKinesisRecords.handler
-  runtime: nodejs
-  memory_size: 128
-  timeout: 3
-  event_sources:
-    -
-      # You need to change this arn to point to your own kinesis
-      # stream that you have created separately.
-      arn: arn:aws:kinesis:us-east-1:084307701560:stream/lambdastream
-      starting_position: TRIM_HORIZON
-      batch_size: 100
-  test_data: input.json
+# Welcome to Serverless!
+service: LambdaChatDynamoDB
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: us-west-2
+  iamRoleStatements: # permissions for all of your functions can be set here
+    - Effect: Allow
+      Action: # Gives permission to S3 tables in a specific region
+        - s3:*
+      Resource: "*"
+
+functions:
+  hello:
+    handler: handler.hello
+    memorySize: 256
+    timeout: 6
+    events:
+    - stream:
+        arn: arn:aws:dynamodb:us-west-2:898625074903:table/lambdachat/stream/2017-01-24T06:45:04.641
+        batchSize: 1
+        startingPosition: LATEST
+        enabled: true 
+#      - http:
+#          path: users/create
+#          method: get
+#      - s3: ${env:BUCKET}
+
   ```
 ---
 ## Kappa Usage
