@@ -639,33 +639,35 @@ functions:
 
   ```
 ---
-## Kappa Usage
+## Serverless Usage
 
-Create the IAM policy, IAM Role, zips up the code and create your Lambda function
+Cree la política de IAM, IAM Role, encierra el código y cree su función Lambda
 
 ```bash
-$ kappa config.yml create
+$ serverless create --template aws-nodejs
 ```
 
-Test your function with the `test_data` event as input
+Despliega en AWS account 
 
 ```bash
-$ kappa config.yml invoke
+$ serverless deploy
 ```
 
-Make a change to the code, and then
+Pruebe su función 
+
 ```bash
-$ kappa config.yml update_code
+$ serverless invoke [local] --function functionName
 ```
 
 ---
 template: inverse
 
 ## Lambda Chat
+.footnote[Demo]
 ---
-## Goal
+## Objetivo
 
-To create a dynamic website without EC2
+Crear un sitio web dinámico sin EC2
 
   - No servers
 
@@ -673,65 +675,50 @@ To create a dynamic website without EC2
 
   - No security groups
 ---
-## Inspiration
-
-
-.center[![Building Dynamic Dashboards Using Lambda and DynamoDB Streams: Part 1](imgs/dynamic-dashboards.png)]
-
-.footnote[https://medium.com/aws-activate-startup-blog/building-dynamic-dashboards-using-lambda-and-dynamodb-streams-part-1-217e2318ae17]
-
----
-
-## Vote App
-
-http://voteapp.s3-website-us-east-1.amazonaws.com/
-
-.center[![Vote App](imgs/vote-app.png)]
----
 ## Lambda Chat
 
-A simple chat application using AWS Lambda, SNS, DynamoDB and S3.
+Una simple aplicación de chat utilizando AWS Lambda, SNS, DynamoDB y S3.
 
 ---
 ## Lambda Chat
 
-A simple chat application using AWS Lambda, SNS, DynamoDB and S3.
+Una simple aplicación de chat utilizando AWS Lambda, SNS, DynamoDB y S3.
 
-  - Host the HTML, CSS and JavaScript on S3
+  - Alojar el código HTML, CSS y JavaScript en S3
 
-  - Each chat message is an SNS message
+  - Cada mensaje de chat es un mensaje SNS
 
-  - Use AWS Lambda to process the chat messages
+  - Utilizar AWS Lambda para procesar los mensajes de chat
 
-  - Use DynamoDB as the data store
+  - Utilice DynamoDB como almacén de datos
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 
-Use Web Identity Federation to issue temporary AWS credentials
+Utilizar Web Identity Federation  para emitir credenciales AWS temporales
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 
-Use Web Identity Federation to issue temporary AWS credentials
+Utilizar Web Identity Federation  para emitir credenciales AWS temporales
 
-### 2. How do we read the data back out?
+### 2. ¿Cómo leemos los datos?
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 
-Use Web Identity Federation to issue temporary AWS credentials
+Utilizar Web Identity Federation  para emitir credenciales AWS temporales
 
-### 2. How do we read the data back out?
+### 2. ¿Cómo leemos los datos?
 
-Store the resulting JSON in S3, and have the Javascript poll and update the UI
+Almacenar el JSON resultante en S3, y por medio de Javascript actualizamos la interfaz de usuario
 
 ---
 background-image: url(imgs/lambda-chat.png)
@@ -751,11 +738,11 @@ background-image: url(imgs/lambda-chat.png)
 name: lambda-chat-demo
 class: middle, center
 
-Interactive Demo
+Demo interactivo
 
-## [`http://bit.ly/lambda-chat`](http://bit.ly/lambda-chat)
+## [`http://bit.ly/chat-lambda`](http://bit.ly/chat-lambda)
 
-<small>Pray to the demo gods</small>
+<small>Rezar para que el demo funcione</small>
 
 ???
 
@@ -839,57 +826,25 @@ exports.handler = function(event, context) {
 
 };```
 ---
-## Lambda Chat is open sourced
 
-https://github.com/cloudnative/lambda-chat
-
-You will find
-
-  - All the code, including this presentation
-
-  - CloudFormation script (using [troposphere](https://github.com/cloudtools/troposphere)) for bringing up all the AWS resources
-
-  - Update script to push the website code to S3
-
-  - [Kappa](https://github.com/garnaat/kappa) configuration for both Lambda functions
-
-  - Easy clean up process
----
 template: inverse
 
-## Final thoughts
+## Consideraciones finales
 ---
-## Limitations
+## Limitaciones
 
-  - 100 concurrent, 1000 requests/s
+  - 100 concurrentes, 1000 requests/s
 
-  - Event sources
+  - Fuente de eventos
 
-  - Your imagination
----
-## What generates an SNS Message?
-
-  - .orange[Auto Scaling] can post events to SNS when instances are launched or terminated.
-
-  - .orange[GitHub] can post repository events to SNS. Go to: "Settings" / "Webhooks &amp; Services"
-
-  - An .orange[RDS] Event Subscription can publish to SNS for instance, security group, parameter group and snapshots events.
-
-  - .orange[S3] can publish messages to SNS when a Reduced Redundancy Storage (RRS) object is lost.
-
-  - .orange[S3] can post messages to SNS when a new object is added to a bucket and when an existing object is updated.
-
-  - AWS .orange[CloudWatch] can trigger SNS messages from Alarms.
-
-  - AWS .orange[CloudTrail] can send an SNS messages when a new log file is ready.
-
+  - Nuestra imaginación
 ---
 name: last-page
 template: inverse
 
-## Thanks!
+## Gracias!
 
-## Questions?
+## Preguntas?
 
     </textarea>
     <!--script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script -->
