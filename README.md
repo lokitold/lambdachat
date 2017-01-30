@@ -8,6 +8,8 @@ https://github.com/cloudnative/lambda-chat
 
 - Translation
 - Use of serverless instead of kappa
+- Correction bugs
+- Update 01/2017
 
 ## Live Demo
 
