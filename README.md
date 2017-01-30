@@ -234,8 +234,16 @@ function:
    synchronously with test data and return the log data to the console.
 
 
-#### Lambda functions
+#### DB Dynamo DB
 
+Configuration Dynamo db manually
+
+1. create table 'lambdachat'
+2. IMPORTANT : generate indexs of table 
+
+    Partition key  : channel
+    Add Sort key : timestamp (String)
+    Atributes : All 
 
 ### Usage
 
