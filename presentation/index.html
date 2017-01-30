@@ -216,24 +216,24 @@ template: inverse
 layout: false
 name: what
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 ]
 .right-column[
-  A compute service that makes it easy to run a function in response to events.
+  AWS Lambda es un servicio de computación sin servidores que facilita la ejecución de una función en respuesta a eventos.
 
   ### Example
 
 .slides[
   .first[
   ### Event
-  New image
+  Nueva Imagen
   ]
   .arrow[
     ## &rarr;
   ]
   .second[
   ### Function
-  Generate thumbnail
+  Generar thumbnail
   ]
 ]
 
@@ -241,24 +241,24 @@ name: what
 
 ---
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 
-  ### - Event
+  ### - Evento
 ]
 .right-column[
-  What events can trigger a Lambda function?
+  ¿Qué eventos pueden desencadenar una función Lambda?
 
-  - New object in S3
+  - Nuevo objeto en S3
 
-  - An item changed in a DynamoDB table
+  - Un elemento cambiado en una tabla DynamoDB
 
-  - New entries in a Kinesis stream
+  - Nuevas entradas en un flujo de Kinesis
 
-  - A sync event in Cognito
+  - Un evento de sincronización en Cognito
 
-  - API call: `Invoke` and `InvokeAsync`
+  - Llamada de la API: `Invoke` y` InvokeAsync`
 
-  - SNS message
+  - Mensaje de SNS
 ]
 
 ???
@@ -274,21 +274,21 @@ Examples
   - SNS Message is the big one.
 ---
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 
   ### - Event
   ### - Function
 ]
 .right-column[
-  What language can I write a Lambda function in?
+  ¿En qué lenguaje de programación puedo escribir una función Lambda?
 
-  - Now: JavaScript (technially NodeJS v0.10.33)
+  - JavaScript (NodeJS v4.3)
 
-  - Announced: Java
+  - Java 8
 
-  - Wanted: Python and Go
+  - Python 2.7
 
-  - Hack: Anything
+  - C#
 ]
 
 ???
@@ -297,79 +297,79 @@ Java should have been released by Apr 24?
 
 ---
 .left-column[
-  ## What is it?
+  ## ¿Qué es?
 
   ### - Event
   ### - Function
 
-  ## Why use it?
+  ## ¿Por qué usarlo?
 ]
 .right-column[
-  You get to focus on the code!
+  ¡Usted consigue centrarse en el código!
 
-  - Write atomic units
+   - Escribir unidades atómicas
 
-  - Easy to test
+   - Fácil de probar
 
-  - No server or container maintenance
+   - Sin mantenimiento de servidores o contenedores
 
-  - Forced micro (nano?) services approach
+   - Forzar el enfoque de micro (nano?) servicios
 
-  - Secured by an IAM policy
+   - Asegurado por una política de IAM
 
-  - Speed
+   - Velocidad
 
-  - Cheap
+   - Barato
 ]
 
 ???
-  - You don't worry about setting up and configuring NodeJS, or monitoring, or logging services - all built in
-  - A Dockerfile is ops - you are writing a shell script to configure an environment
-  - A lambda function is protected by the same IAM policy framework that protects the rest of your AWS infrastructure
+ No se preocupe por configurar y configurar NodeJS, o los servicios de monitoreo o registro - todos ellos incorporados
+   - Un Dockerfile es ops - está escribiendo un script de shell para configurar un entorno
+   - Una función lambda está protegida por el mismo marco de políticas IAM que protege el resto de su infraestructura AWS
 
 ---
 template: inverse
 
-## How cheap?
+## Barato?
 ---
 .left-column[
-  ## Billing Model
+  ## Modelo de facturación
 ]
 .right-column[
-AWS Lambda is charged by both
+AWS Lambda es cobrado por
 
-  - Requests
+  - Peticiones
     - $0.20 per million requests
 
-  - Compute
+  - Computo
     - $0.00001667 per GB-second
 
-### Free tier
+### Capa gratuita
 
-The Lambda free tier includes:
+La capa gratuita de Lambda incluye:
 
-  - 1,000,000 free requests per month
+  - 1,000,000 peticiones mensuales
 
-  - 400,000 GB-seconds of compute time per month
+  - 400,000 GB-seconds de tiempo de computo por mes
 
 ]
 
 ---
 name: billing
 .left-column[
-  ## Billing Model
+  ## Modelo de facturación
 
 ]
 .right-column[
-How is a GB-second calculated?
+¿Cómo se calcula un GB-second?
 
-  - Duration: rounded up to the nearest 100ms
+   - Duración: redondeado a los 100 ms
 
-  - Memory: you choose the maximum memory your function needs
+   - Memoria: elige la memoria máxima que necesita tu función
 
-    - from 128MB to 1GB
+     - de 128MB a 1GB
 
-    - in increments of 64MB
+     - en incrementos de 64MB
 
 
 ### Formula
@@ -381,18 +381,18 @@ GB-s = (memory / 1024) * (duration * 1000)
 ]
 ---
 .left-column[
-  ## Billing Model
+  ## Modelo de facturación
 
-  ### - Example
+  ### - Ejemplo
 
 ]
 .right-column[
-An example
+  Un ejemplo
 
-  - 10M requests / month
-  - Each request
-      - lasts for 600ms
-      - uses a max of 512Mb of memory
+  - 10M solicitudes / mes
+  - Cada solicitud
+      - dura 600 ms
+      - utiliza un máximo de 512Mb de memoria
 
 ```python
 Request cost  = (10M - 1M) * $0.20/month
@@ -410,30 +410,30 @@ Compute costs = (3,000,000 - 400,000) * $0.00001667
 ---
 template: inverse
 
-## OK, that's cheap.
+## OK, eso es barato.
 
-## So how does it work?
+## ¿Entonces, cómo funciona?
 ---
 .left-column[
-## Programming model
+## Modelo de programación
 
 ]
 .right-column[
-Your function defines a handler
+Tu función define un handler
 
 ```javascript
-exports.handler = function(event, context) {
+exports.handler = function(event, context, callback) {
   var key1 = event.key1
-  console.log('value =', key1);
-  context.succeed(key1);
+  console.log("value1 = " + key1);
+  console.log("value2 = " + event.key2);  
+  callback(null, "some success message");
 };
 ```
 
 ### The `context` object
 
-  - How you interact with the Lambda execution environment
+  - Cómo interactúa con el entorno de ejecución Lambda
 
-  - When your function is complete, call one of:
     ```javascript
       // It's all good
       context.succeed(Object result);
@@ -449,8 +449,29 @@ exports.handler = function(event, context) {
 "error first" callback design pattern
 
 ---
+
 .left-column[
-## Invocation
+## Modelo de programación
+
+]
+.right-column[
+
+### The `callback` object
+  - Puede utilizar la devolución de llamada opcional para devolver información
+
+    ```javascript
+    callback(null, "some success message");
+    // or 
+    // callback("some error type"); 
+    ```
+]
+???
+"error first" callback design pattern
+
+---
+
+.left-column[
+##  Invocación
 
 ### - Pull
 
@@ -458,16 +479,16 @@ exports.handler = function(event, context) {
 .right-column[
 ### Pull Model
 
-Lambda polls the event source and invokes your Lambda function when it detects an event
+Lambda examina la fuente de eventos e invoca su función Lambda cuando detecta un evento
 
 ![Lambda Kinesis Pull Model](imgs/kinesis-pull-10.png)
 
-.footnote[.red[*] Image ~~courteous of~~ stolen from the AWS docs]
+
 
 ]
 ---
 .left-column[
-## Invocation
+## Invocación
 
 ### - Pull
 ### - Push
@@ -477,7 +498,7 @@ Lambda polls the event source and invokes your Lambda function when it detects a
 
 ### Push Model
 
-The event source directly invokes a Lambda function when it detects an event
+El origen de eventos invoca directamente una función Lambda cuando detecta un evento
 
 ![Lambda S3 Push Model](imgs/push-s3-example-10.png)
 
@@ -486,22 +507,22 @@ The event source directly invokes a Lambda function when it detects an event
 ]
 ---
 .left-column[
-## Permissions
+## Permisos
 
 ]
 .right-column[
 
-Your Lambda function executes within an IAM Role
+Su función Lambda se ejecuta dentro de un Rol IAM
 
 ### Execution Permissions
 
 E.g.
 
-  - Write logs to CloudWatch Logs (needed for debugging)
-  - Read/write objects from/to an S3 bucket
-  - Write items to a DynamoDB table
+  - Escribir registros en los registros de CloudWatch (necesarios para la depuración)
+  - Leer / escribir objetos de / a un bucket de  S3
+  - Escribir elementos en una tabla DynamoDB
 
-### Invocation Permissions
+### Permisos de invocación
 
 ```json
 {
@@ -528,176 +549,125 @@ Cross-account
 "Principal": "account-id"
 ```
 ---
-## Example Kinesis Pull Policy
+## Example S3 Pull Policy
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "lambda:InvokeFunction"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "kinesis:GetRecords",
-        "kinesis:GetShardIterator",
-        "kinesis:DescribeStream",
-        "kinesis:ListStreams",
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "*"
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream"
+            ],
+            "Resource": "arn:aws:logs:us-west-2:*:*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:us-west-2:*:*",
+            "Effect": "Allow"
+        }
+        {
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
 }
 ```
 ---
 template: inverse
 
-## Open Source Projects
----
-## lambdash
-
-Written by Eric Hammond ([@esh](https://twitter.com/esh))
-
-
-### What is it?
-
-A lambda function that runs arbitrary shell commands in the AWS Lambda environment.
-
-```
-$ lambdash pwd
-/var/task
-```
-
-.footnote[https://github.com/alestic/lambdash]
+## Serverless
+![Lambda S3 Push Model](imgs/serverless.png)
 
 ---
-template: inverse
+## Serverless
 
-## Demo
+Desarrollado por Austen Collins ([@austencollins](https://twitter.com/austencollins)) 
 
-???
 
-```
-cd ~/code/pas256/lambdash
-./lambdash pwd
-./lambdash cat /etc/issue
-./lambdash python --version
-./lambdash /usr/bin/python2.7 --version
-./lambdash java -version
-```
+### Qué es esto?
 
-What NodeJS modules are installed
+Serverless es una herramienta de línea de comandos que facilita el despliegue, actualización y prueba de las funciones de AWS Lambda
 
 ```
-dirs=$(./lambdash 'echo $NODE_PATH' | tr ':' '\n' | sort); echo $dirs
-
-./lambdash 'for dir in '$dirs'; do echo $dir; ls -1 $dir; echo; done'
-```
----
-## Go in Lambda
-
-1. Compile Go app against Amazon Linux
-2. Use this Javascript handler
-
-```
-var child_process = require('child_process');
-
-exports.handler = function(event, context) {
-  var proc = spawn('./my-go-app', [ JSON.stringify(event) ], { stdio: 'inherit' });
-
-  proc.on('close', function(code){
-    if(code !== 0) {
-      return context.done(new Error("Process exited with non-zero status code"));
-    }
-
-    context.done(null);
-  });
-}
-```
----
-## Kappa
-
-Written by Mitch Garnaat ([@garnaat](https://twitter.com/garnaat)) who also wrote boto
-
-### What is it?
-
-Kappa is a command line tool that makes it easier to deploy, update, and test AWS Lambda functions
-
-```
-$ kappa [OPTIONS] CONFIG COMMAND [ARGS]...
+$ npm install serverless -g
 ```
 
-The config is a YAML file containing all the details
+La configuración es un archivo YAML que contiene todos los detalles
 
-.footnote[https://github.com/garnaat/kappa]
+.footnote[https://serverless.com/]
 
 ---
-## Kappa Kinesis config file
+## serverless.yml config file
 
 ```bash
-# Change the profile and region to suit your application
-profile: personal
-region: us-east-1
-iam:
-  policy:
-    name: AWSLambdaKinesisExecutionRole
-  role:
-    name: KinesisSampleRole
-lambda:
-  name: KinesisSample
-  zipfile_name: KinesisSample.zip
-  description: Testing Kinesis Lambda handler
-  path: ProcessKinesisRecords.js
-  handler: ProcessKinesisRecords.handler
-  runtime: nodejs
-  memory_size: 128
-  timeout: 3
-  event_sources:
-    -
-      # You need to change this arn to point to your own kinesis
-      # stream that you have created separately.
-      arn: arn:aws:kinesis:us-east-1:084307701560:stream/lambdastream
-      starting_position: TRIM_HORIZON
-      batch_size: 100
-  test_data: input.json
+# Welcome to Serverless!
+service: LambdaChatDynamoDB
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: us-west-2
+  iamRoleStatements: # permissions for all of your functions can be set here
+    - Effect: Allow
+      Action: # Gives permission to S3 tables in a specific region
+        - s3:*
+      Resource: "*"
+
+functions:
+  hello:
+    handler: handler.hello
+    memorySize: 256
+    timeout: 6
+    events:
+    - stream:
+        arn: arn:aws:dynamodb:us-west-2:898625074903:table/lambdachat/stream/2017-01-24T06:45:04.641
+        batchSize: 1
+        startingPosition: LATEST
+        enabled: true 
+#      - http:
+#          path: users/create
+#          method: get
+#      - s3: ${env:BUCKET}
+
   ```
 ---
-## Kappa Usage
+## Serverless Usage
 
-Create the IAM policy, IAM Role, zips up the code and create your Lambda function
+Cree la política de IAM, IAM Role, encierra el código y cree su función Lambda
 
 ```bash
-$ kappa config.yml create
+$ serverless create --template aws-nodejs
 ```
 
-Test your function with the `test_data` event as input
+Despliega en AWS account 
 
 ```bash
-$ kappa config.yml invoke
+$ serverless deploy
 ```
 
-Make a change to the code, and then
+Pruebe su función 
+
 ```bash
-$ kappa config.yml update_code
+$ serverless invoke [local] --function functionName
 ```
 
 ---
 template: inverse
 
 ## Lambda Chat
+.footnote[Demo]
 ---
-## Goal
+## Objetivo
 
-To create a dynamic website without EC2
+Crear un sitio web dinámico sin EC2
 
   - No servers
 
@@ -705,65 +675,50 @@ To create a dynamic website without EC2
 
   - No security groups
 ---
-## Inspiration
-
-
-.center[![Building Dynamic Dashboards Using Lambda and DynamoDB Streams: Part 1](imgs/dynamic-dashboards.png)]
-
-.footnote[https://medium.com/aws-activate-startup-blog/building-dynamic-dashboards-using-lambda-and-dynamodb-streams-part-1-217e2318ae17]
-
----
-
-## Vote App
-
-http://voteapp.s3-website-us-east-1.amazonaws.com/
-
-.center[![Vote App](imgs/vote-app.png)]
----
 ## Lambda Chat
 
-A simple chat application using AWS Lambda, SNS, DynamoDB and S3.
+Una simple aplicación de chat utilizando AWS Lambda, SNS, DynamoDB y S3.
 
 ---
 ## Lambda Chat
 
-A simple chat application using AWS Lambda, SNS, DynamoDB and S3.
+Una simple aplicación de chat utilizando AWS Lambda, SNS, DynamoDB y S3.
 
-  - Host the HTML, CSS and JavaScript on S3
+  - Alojar el código HTML, CSS y JavaScript en S3
 
-  - Each chat message is an SNS message
+  - Cada mensaje de chat es un mensaje SNS
 
-  - Use AWS Lambda to process the chat messages
+  - Utilizar AWS Lambda para procesar los mensajes de chat
 
-  - Use DynamoDB as the data store
+  - Utilice DynamoDB como almacén de datos
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 
-Use Web Identity Federation to issue temporary AWS credentials
+Utilizar Web Identity Federation  para emitir credenciales AWS temporales
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 
-Use Web Identity Federation to issue temporary AWS credentials
+Utilizar Web Identity Federation  para emitir credenciales AWS temporales
 
-### 2. How do we read the data back out?
+### 2. ¿Cómo leemos los datos?
 ---
-## Challenges
+## Reto
 
-### 1. How do we send SNS messages from Javascript?
+### 1. ¿Cómo enviamos mensajes SNS desde Javascript?
 
-Use Web Identity Federation to issue temporary AWS credentials
+Utilizar Web Identity Federation  para emitir credenciales AWS temporales
 
-### 2. How do we read the data back out?
+### 2. ¿Cómo leemos los datos?
 
-Store the resulting JSON in S3, and have the Javascript poll and update the UI
+Almacenar el JSON resultante en S3, y por medio de Javascript actualizamos la interfaz de usuario
 
 ---
 background-image: url(imgs/lambda-chat.png)
@@ -783,11 +738,11 @@ background-image: url(imgs/lambda-chat.png)
 name: lambda-chat-demo
 class: middle, center
 
-Interactive Demo
+Demo interactivo
 
-## [`http://bit.ly/lambda-chat`](http://bit.ly/lambda-chat)
+## [`http://bit.ly/chat-lambda`](http://bit.ly/chat-lambda)
 
-<small>Pray to the demo gods</small>
+<small>Rezar para que el demo funcione</small>
 
 ???
 
@@ -871,57 +826,25 @@ exports.handler = function(event, context) {
 
 };```
 ---
-## Lambda Chat is open sourced
 
-https://github.com/cloudnative/lambda-chat
-
-You will find
-
-  - All the code, including this presentation
-
-  - CloudFormation script (using [troposphere](https://github.com/cloudtools/troposphere)) for bringing up all the AWS resources
-
-  - Update script to push the website code to S3
-
-  - [Kappa](https://github.com/garnaat/kappa) configuration for both Lambda functions
-
-  - Easy clean up process
----
 template: inverse
 
-## Final thoughts
+## Consideraciones finales
 ---
-## Limitations
+## Limitaciones
 
-  - 100 concurrent, 1000 requests/s
+  - 100 concurrentes, 1000 requests/s
 
-  - Event sources
+  - Fuente de eventos
 
-  - Your imagination
----
-## What generates an SNS Message?
-
-  - .orange[Auto Scaling] can post events to SNS when instances are launched or terminated.
-
-  - .orange[GitHub] can post repository events to SNS. Go to: "Settings" / "Webhooks &amp; Services"
-
-  - An .orange[RDS] Event Subscription can publish to SNS for instance, security group, parameter group and snapshots events.
-
-  - .orange[S3] can publish messages to SNS when a Reduced Redundancy Storage (RRS) object is lost.
-
-  - .orange[S3] can post messages to SNS when a new object is added to a bucket and when an existing object is updated.
-
-  - AWS .orange[CloudWatch] can trigger SNS messages from Alarms.
-
-  - AWS .orange[CloudTrail] can send an SNS messages when a new log file is ready.
-
+  - Nuestra imaginación
 ---
 name: last-page
 template: inverse
 
-## Thanks!
+## Gracias!
 
-## Questions?
+## Preguntas?
 
     </textarea>
     <!--script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script -->
