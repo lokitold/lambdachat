@@ -163,6 +163,10 @@ The script tells you the URL of the website. Open that up in your browser.
 
 #### Lambda functions
 
+Deployment using serverless or kappa
+
+##### KAPPA
+
 To help with the AWS Lambda side of things, we are using
 [kappa](https://github.com/garnaat/kappa).  Kappa is a CLI tool that helps with
 the details of creating and managing AWS Lambda applications.  You must install
@@ -199,6 +203,38 @@ function:
    synchronously with test data and return the log data to the console.
 1. run ``kappa config.yml add_event_sources``.  This will connect the DynamoDB
    stream to your AWS Lambda function.
+
+##### Serverless
+
+https://serverless.com/
+
+######Install
+
+npm install -g serverless
+
+###### Deploy 
+
+Now create the components required for the SNS->DynamoDB Lambda function:
+
+1. cd lambda/ServerlessSns
+1. run ``serverless deploy --stage production ``
+
+    https://serverless.com/framework/docs/providers/aws/cli-reference/deploy/
+1. run ``serverless invoke --function hello --path event.json ``.  This will call the AWS Lambda function
+   synchronously with test data and return the log data to the console.
+
+     https://serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/
+
+Finally, you need to create the components requried for the DynamoDB->S3 Lambda
+function:
+
+1. cd lambda/serverless-dynamodb
+1. run ``serverless deploy --stage production ``
+1. run ``serverless invoke --function hello --path event.json ``.  This will call the AWS Lambda function
+   synchronously with test data and return the log data to the console.
+
+
+#### Lambda functions
 
 
 ### Usage
